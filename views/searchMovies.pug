@@ -1,0 +1,14 @@
+
+//- .card(style="width:20rem")
+//-     h4.card-title=movie.title
+//-     img.card-img-top(src=movie.cover)
+//-     .card-block
+//-         p.card-text=movie.word
+//-         a.btn.btn-primary(href="http://")  飒飒
+
+a.videopic( style='background: url("'+movie.cover+'") 50% 50%  no-repeat; display: block;') 
+    span.score #{movie.label.content}
+    span.note.textbg=movie.word
+.title
+    h5.text-overflow
+        a(href='#' title='')=movie.title

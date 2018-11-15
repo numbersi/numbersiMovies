@@ -1,0 +1,36 @@
+extends layout
+
+block content
+  
+  style.
+    .videopic{
+      display: block;
+      position: relative;
+    }
+    .videopic .score {
+      position: absolute;
+      top: 5px;
+      left: -5px;
+      padding: 0 5px;
+      text-align: right;
+      font-size: 12px;
+      background-color: #09BB07;
+      color: #fff;
+    }
+    .text-overflow{overflow:hidden;text-overflow:ellipsis;-o-text-overflow:ellipsis;white-space:nowrap;width:100%;text-align:center}
+    .videopic{display:block;position:relative;padding-top:50%}
+    .videopic .play{display:none;position:absolute;top:0;z-index:1;width:100%;height:100%;background:rgba(0,0,0,.3) url(../play.png) center no-repeat}
+    .videopic:hover .play{display:block}
+    .videopic .textbg{display:block;width:100%;position:absolute;bottom:0;left:0;padding:5px 10px;background-repeat:no-repeat;background-repeat:no-repeat;background-image:linear-gradient(transparent,rgba(0,0,0,.5));font-size:12px;color:#fff;text-align:center}
+    .videopic .note{padding:5px 10px}
+    .videopic .score{position:absolute;top:5px;left:-5px;padding:0 5px;text-align:right;font-size:12px}
+  h1= title
+  p Welcome 
+    .container-fluid 
+        .row
+            each movie in data
+             .col-4.card(style="magin-top:20")
+                img.card-img-top(src=movie.moviePic, alt="", srcset="")
+                .card-block
+                    .card-title=movie.title
+                    .card-text=movie.description

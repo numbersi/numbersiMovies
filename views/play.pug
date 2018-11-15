@@ -1,0 +1,34 @@
+extends layout
+block content
+    #a1
+    .row-fluid
+        .tabbable
+            ul#myTab.nav.nav-tabs
+                each tab ,k in tabs
+                    .col-4
+                        if !k
+                            li.active
+                                a.btn.btn-success(href="#"+tab  data-toggle="tab")=tab
+                        else
+                            li
+                                a.btn.btn-success(href="#"+tab  data-toggle="tab")=tab
+            #myTabContent.tab-content
+                    each seriesNumber,tab in seriesNumbers
+                        .tab-pane.fade.in(id=tab)
+                                    each href ,num in seriesNumber
+                                        a.col-1.playOne.btn.btn-info(data-url=href,style='color:#fff')=num
+block scriptCode
+    script.
+         $(function() {
+            var a = $('.active  a').text()
+            //- document.getElementById('a1').innerHTML = '<iframe width="100%" height="100%" allowFullScreen="true" allowTransparency="true" frameborder="0" scrolling="no" src="http://all.baiyug.cn:2019/vip_all/url.php?xml=http://www.iqiyi.com/v_19rr3xsxvw.html?vfm=f_245_360d&md5=ab5982883e8ab5d66ae96cf3ab25loij&type=auto&hd=cq&wap=1&siteuser=&m3u8=1&lg=&cip=cq&iqiyicip=cq"></iframe>';
+            document.getElementById('a1').innerHTML = '<video src="http://all.baiyug.cn:2019/vip_all/url.php?xml=http://www.iqiyi.com/v_19rr3xsxvw.html?vfm=f_245_360d&md5=ab5982883e8ab5d66ae96cf3ab25loij&type=auto&hd=cq&wap=1&siteuser=&m3u8=1&lg=&cip=cq&iqiyicip=cq" controls="controls" width="100%" height="100%"></video>';
+
+            $('#'+a).addClass('show')
+            $('#'+a).addClass('active')
+            $('.playOne').click(function(){
+                let url = $(this).data('url')
+                alert(url)
+            })
+
+         });
