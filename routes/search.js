@@ -8,14 +8,13 @@ router.get('/movie/:kw', async (ctx, next) => {
 //    动态路由 获取关键词 
     kw=ctx.params.kw
     let data =await searchDataFrom360kan(kw)
-    // await ctx.render('search',{data:data})
-    ctx.body=data
+    await ctx.render('search',{data:data})
 
 })
 
-router.get('/play/:urlCode', async (ctx,next)=>{
-    urlCode=ctx.params.urlCode
-    tabs = decodeTab(urlCode)
+router.get('/play/:tabs', async (ctx,next)=>{
+    tabs=ctx.params.tabs
+    tabs = decodeTab(tabs)
     let seriesNumbers ={}
 
     for(let i = 0; i　< tabs.length; i++) {
@@ -46,8 +45,9 @@ function decodeTab(codeTab){
 }
 async function  searchDataFrom360kan(kw){
     // url = `https://so.360kan.com/index.php?kw=${kw}&from=`
-    url ='https://so.360kan.com/index.php?kw=%E7%A7%A6%E6%97%B6%E6%98%8E%E6%9C%88&from='
-
+    url ='https://so.360kan.com/index.php?kw='+encodeURIComponent(kw)+'&from='
+    console.log(url);
+    
     const html  =  await request(url)
     var $ = cheerio.load(html)
     var movieList = [];

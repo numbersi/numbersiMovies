@@ -27,10 +27,9 @@ block content
   h1= title
   p Welcome 
     .container-fluid 
-        .row
             each movie in data
-             .col-4.card(style="magin-top:20")
+              a.col-6.card(style="magin-top:20",href="/search/play/"+movie.tabs)
                 img.card-img-top(src=movie.moviePic, alt="", srcset="")
                 .card-block
                     .card-title=movie.title
-                    .card-text=movie.description
+                    //- .card-text=movie.description
