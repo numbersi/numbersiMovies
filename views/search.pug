@@ -28,8 +28,9 @@ block content
   p Welcome 
     .container-fluid 
             each movie in data
-              a.col-6.card(style="magin-top:20",href="/search/play/"+movie.tabs)
+              a.col-6.card(style="magin-top:20",href="/search/play/"+movie.type+"/"+movie.tabs)
                 img.card-img-top(src=movie.moviePic, alt="", srcset="")
                 .card-block
                     .card-title=movie.title
+                        p=movie.playtype
                     //- .card-text=movie.description
