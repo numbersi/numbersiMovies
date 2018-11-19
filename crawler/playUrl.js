@@ -4,7 +4,8 @@ const url = process.argv[2]
     // 获取  浏览器 对象
 const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
-    dumpio: false
+    dumpio: false,
+    executablePath: '/var/www/html/wechat/production/source/node_modules/puppeteer/.local-chromium/linux-599821/chrome-linux/chrome'
 })
 // 获取  网页  对象
 const page = await browser.newPage()
