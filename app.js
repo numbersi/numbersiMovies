@@ -10,7 +10,6 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const search = require('./routes/search')
 
-
 // error handler
 onerror(app)
 

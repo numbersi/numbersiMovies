@@ -2,7 +2,6 @@ const puppeteer =  require('puppeteer')
 const devices = require('puppeteer/DeviceDescriptors')
 const iPhone =devices['Nexus 7']
 
-
 const sleep = time => new Promise(resolve =>{
     setTimeout(resolve,time)
 })
