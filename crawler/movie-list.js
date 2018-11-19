@@ -8,7 +8,7 @@ const url = `https://www.360kan.com/${a}/list.php?rank=rankhot&cat=all&area=all&
 const puppeteer = require('puppeteer')
 ;(async ()=>{
     console.log(' 开始 ');
-    const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']})
+    const browser = await puppeteer.launch({executablePath='/var/www/html/wechat/production/source/node_modules/puppeteer/.local-chromium/linux-599821/chrome-linux/chrome',args: ['--no-sandbox', '--disable-setuid-sandbox']})
     const page = await browser.newPage()
     await page.goto(url,{
         waitUntil: 'networkidle2'
