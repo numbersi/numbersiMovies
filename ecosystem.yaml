@@ -19,3 +19,4 @@ deploy:
     post-deploy: 'npm i && pm2 startOrRestart ecosystem.yaml --env production'
     env:
       NODE_ENV: production
+    
