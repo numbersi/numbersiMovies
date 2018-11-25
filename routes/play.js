@@ -26,10 +26,16 @@ async function getDataBy2345Url(url){
   const html  =  await request({url, encoding: null})
   let data
   let template 
+  
   switch (urlType) {
+    
     case 'dianying':
-    data =  await jxDianying(html)
-    template='dianying'
+      if(url.includes('mingxing')){
+        template='mingxing'
+        break
+      }
+      data =  await jxDianying(html)
+      template='dianying'
       break;
     case 'tv':
     data = await jxTv(html)
@@ -42,12 +48,11 @@ async function getDataBy2345Url(url){
     default:
       break;
   }
-  console.log(data);
   return {template,data}
 }
 
 async function jxTv(html){
-  const playSources = ['mgtv_con','youku_con','qq_con','qiyi_con','pptv_con']
+  const playSources = ['mgtv_con','qq_con','youku_con','qiyi_con','pptv_con']
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
   const img = $('.pic img').attr('src')
   const title = $('.tit a').attr('title')
@@ -77,24 +82,33 @@ async function jxTv(html){
   }
   return allData
 }
+
 async function jxDianying(html){
   // 顺序表
   const playSources = ['mgtv_0','youku_0','qq_0','mgtv_0','qiyi_0','pptv_0']
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
   let playSourceUrl  =''
+  const img = $('.pic img').attr('src')
+  const title = $('.tit h1').text()
+  const emScore = $('.emScore').text().trim()
+
   for (let index = 0; index < playSources.length; index++) {
     // 优先获取 顺序，
     let playSource = playSources[index];
+    console.log(playSource);
     const element_a = $(`a[data="${playSource}"]`)
-    console.log(element_a);
+    console.log(element_a.text());
     if(element_a.text()){
        playSourceUrl = element_a.attr('href')
       break;
     }
   }
-  return {playLink:playSourceUrl}
+  return {
+    img,
+    title,emScore,
+    playLink:playSourceUrl
+  }
 }
 async function jxZongyi(html){
-  
 }
 module.exports = router

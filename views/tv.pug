@@ -1,17 +1,16 @@
 extends layout
-
 block content
-    p=title
-        each playList  in playNumList.reverse() 
-            a.playLink(href="javascript:void(0)" data-href=playList.playLink)
-                h3=playList.num+"  "+playList.playLinkTitle
+    .row-fluid
+        p=title
+            each playList  in playNumList.reverse() 
+                a.playLink(href="javascript:void(0)" data-href=playList.playLink)
+                    h3=playList.num+"  "+playList.playLinkTitle
 
-    #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
-        .modal-dialog.modal-lg
-        #videoModal.modal-content
-            video#my-player(class="video-js vjs-default-skin vjs-big-play-centered" controls)
-                source
-                    
+        #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+            .modal-dialog.modal-lg
+            #videoModal.modal-content
+                video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" controls)
+                    source
     script.
         var player =null
         $(document).ready(function(){
@@ -22,54 +21,33 @@ block content
             $('#myModal').on('hidden.bs.modal',function(e){
                 if(player &&player.pause) player.pause()
             })
-            console.log('#{title}')
         })
                   function getPlayUrl(url){
                 $.get(
                     '/search/getPlayUrl?type=dianying&url='+url,function(data,status){
+                        if(data.startsWith('http'))
                            $('source').attr('src',data)
                             $('source').attr('type',"application/x-mpegURL")
                             $('#myModal').modal('show')
                             $('#myModalLabel').html('#{title}')
+                            const playType = getPlayType(data)
+                                        console.log(playType)
+                                        console.log(data)
                             if(!player){
                                player = videojs('my-player',{
                                    sources: [{
                                         src: data,
-                                        type: "application/x-mpegURL"//'video/mp4'
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
                                     }]
                                });
 
                             }
                         }
                 )}
-        function addDplayer(url){
-                            var video =data
-                             var img = '#{img}'
-                            $('#myModal').modal('show')
-                            $('#myModalLabel').html('#{title}')
-                            if(!player){
-                                player = new DPlayer({
-                                    container: document.getElementById('videoModal'),
-                                    screenshot: true,
-                                    video:{
-                                        url:video,
-                                        pic:img,
-                                        thumbnails:img,
-                                        type:'auto'
-                                    }
-                                })
-                                player.on('play',function(){
-                                    
-                                })
-                                
-                            }else{
-                                if(player.options.video.url ==video){
-                                    return
-                                }
-                                player.switchVideo({
-                                        url:video,
-                                        pic:img,
-                                        type:'auto'
-                                })
-                            }
+
+        function getPlayType(url){
+            if(url.split('?')[0].endsWith('.mp4')){
+                return 'video/mp4'
+            }
+            return "application/x-mpegURL"
         }
