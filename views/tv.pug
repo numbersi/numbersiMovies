@@ -1,10 +1,16 @@
 extends layout
 block content
     .row-fluid
-        p=title
-            each playList  in playNumList.reverse() 
-                a.playLink(href="javascript:void(0)" data-href=playList.playLink)
-                    h3=playList.num+"  "+playList.playLinkTitle
+        .page-header
+          div.row
+            img.center-block(src=img, alt="", srcset="")
+          h1.center-block.text-center=title
+             .list-group
+                each playList  in playNumList.reverse() 
+                
+                        a.list-group-item.playLink(href="javascript:void(0)" data-href=playList.playLink)
+                            h3.list-group-item-heading.active=playList.num
+                                  p.list-group-item-text=playList.playLinkTitle
 
         #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
             .modal-dialog.modal-lg
