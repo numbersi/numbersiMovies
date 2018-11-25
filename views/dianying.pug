@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    #video(data-url=playLink)
+    p 这是电影模版
+
+    script.
+        $(function() {
+           const  url= $('#video').data('url')
+            getPlayUrl(url)
+          });
+              function getPlayUrl(url){
+                  $.get(
+                      '/search/getPlayUrl?type=dianying&url='+url,function(data,status){
+                          if(data.startsWith('http')){
+                          let videoDiv  = document.getElementById('video')
+                           videoDiv.innerHTML = '';
+                           $('<video id="DY" src="'+data+'" controls="controls" width="100%" height="100%"></video>').appendTo(videoDiv)
+                           if($('#DY').error){
+                           }
+                                                          console.log($('#DY').error)
+
+                          }
+
+                      }
+                  )
+              }

@@ -1,16 +1,6 @@
-const router = require('koa-router')()
-var request = require('request-promise');
-var cheerio = require('cheerio');
-   // url = `https://so.360kan.com/index.php?kw=${kw}&from=`
-    url ='https://so.360kan.com/index.php?kw=%E5%A6%82%E6%87%BF%E4%BC%A0&from='
+var request = require('request');
+const url = 'http://v.kandian.qq.com/1006_1d5c491a0759482ea8b5bbfcacfea046.f20.mp4'
 
-    const html  = await request(url);
-    var $ = cheerio.load(html)
-    var videoList = [];
-    // console.log(html);
-            console.log('22')
-
-    $('.js-dianshi').each(function(){
-        var title  = $(this)
-        console.log('22')
-    })
+request.head(url,(e,r,b)=>{
+    console.log(r.statusCode)
+})

@@ -1,7 +1,6 @@
 const router = require('koa-router')()
 var request = require('request-promise');
 var cheerio = require('cheerio');
-var {getPlayUrl} = require('../lib/lib-getPlayUrl');
 var {resolve} = require('path')
 const { exec } = require('child_process');
 
@@ -21,7 +20,6 @@ router.get('/play/:type/:tabs', async (ctx,next)=>{
     type=ctx.params.type
     tabs = decodeTab(tabs)
     let seriesNumbers ={}
-    console.log(seriesNumbers);
     let playTemplet= 'dianshi-dianying'
     for(let i = 0; i　< tabs.length; i++) {
         tab = tabs[i]
@@ -45,20 +43,24 @@ router.get('/play/:type/:tabs', async (ctx,next)=>{
         
         seriesNumbers[tab[2]]=url
     }
-    console.log(seriesNumbers);
     
     await ctx.render ('play',{tabs:Object.keys(seriesNumbers),seriesNumbers:seriesNumbers,playTemplet:playTemplet}) 
 })
 router.get('/getPlayUrl',async (ctx,next)=>{
     url=ctx.query.url
-    const util = require('util');
-    const execFile = util.promisify(require('child_process').execFile);
-    const script = resolve(__dirname,'../crawler/playUrl.js')
-    const { stdout } = await execFile('node', [script,'http://app.baiyug.cn:2019/vip/index.php?url='+url]);
-    console.log(stdout);
-
-    ctx.body=stdout
-
+    const {getPlayUrl} = require('../lib/lib-getPlayUrl')
+    const playUrl=  await getPlayUrl(ctx.query)
+    // type = ctx.query.type
+    // let jiekou ='http://app.baiyug.cn:2019/vip/index.php?url='
+    // if(type){
+    //     jiekou= 'http://api.bbbbbb.me/jx/?url='  
+    // }
+    // const util = require('util');
+    // const execFile = util.promisify(require('child_process').execFile);
+    // const script = resolve(__dirname,'../crawler/playUrl.js')
+    // const { stdout } = await execFile('node', [script,jiekou+url]);
+    // console.log(stdout);
+    ctx.body=playUrl
 })
 
 // 加密 encodeUrl

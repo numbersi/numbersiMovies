@@ -29,12 +29,15 @@ const getPlayUrl= async function(url){
       
        console.log( a.length);
 
-       if (a.length){
+       if (a.length>1){
         Object.keys(a).forEach(function(key){
             console.log(key);
             
         })
         playUrl = await a[a.length-1].$eval('video',v=> v.src)
+
+       }else{
+
        }
 
     }

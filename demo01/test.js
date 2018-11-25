@@ -1,5 +1,5 @@
 const {getPlayUrl} = require('./demo2')
-const playUrl =  getPlayUrl('http://app.baiyug.cn:2019/vip/index.php?url=https://www.mgtv.com/b/325963/4733223.html?cxid=90f0zbamf').then(
+const playUrl =  getPlayUrl('http://api.bbbbbb.me/jx/?url=http://v.qq.com/x/cover/sxbxm9xaakyynzp.html?ptag=2345.paymovie').then(
   (s)=>{
     console.log(s);
     

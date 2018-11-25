@@ -5,7 +5,6 @@ let url = process.argv.splice(2)[0]
 const sleep = time => new Promise(resolve =>{
     setTimeout(resolve,time)
 })
-url ='http://api.bbbbbb.me/jx/v.php?url='+url
 // url = 'https://www.baidu.com'
 
 puppeteer.launch()
@@ -19,9 +18,12 @@ puppeteer.launch()
                 url
                 ,{waitUntil:'networkidle2'}
                 );
-            const data = await page.$eval('video',v=> v.src)
-            console.log(data);
-            
+                await sleep(1000)
+                const frame = page.mainFrame();
+                const bodyHandle = await frame.$('body');
+                playUrl = await page.$eval('video', v => v.src)
+                console.log(playUrl);
+                
             browser.close()
         }
         

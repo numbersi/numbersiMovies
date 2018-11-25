@@ -1,11 +1,12 @@
 const puppeteer = require('puppeteer')
 const url = process.argv[2]
+const sleep = time => new Promise(resolve =>{
+    setTimeout(resolve,time)
+})
 ;(async ()=>{
     // 获取  浏览器 对象
 const browser = await puppeteer.launch({
     args: ['--no-sandbox'],
-    dumpio: false,
-    executablePath: '/var/www/html/wechat/production/source/node_modules/puppeteer/.local-chromium/linux-599821/chrome-linux/chrome'
 })
 // 获取  网页  对象
 const page = await browser.newPage()
@@ -16,13 +17,22 @@ await page.setUserAgent(userAgent)
 await page.goto(url, {
     waitUntil: 'networkidle2'
 })
-// const data = await page.$eval('body', () => {})
-const a = await page.frames()
-if (a.length) {
+await sleep(1000)
 
-    playUrl = await a[a.length - 1].$eval('video', v => v.src)
+const a = await page.frames()
+
+try {
+    
+    if (a.length>1) {
+        playUrl = await a[a.length - 1].$eval('video', v => v.src)
+    }else{
+        playUrl = await page.$eval('video', v => v.src)
+    }
+    console.log(playUrl);
+} catch (error) {
+    console.log('notFind');
+}finally{
+    browser.close()
 }
-console.log(playUrl);
-browser.close()
 
 })()

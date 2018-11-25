@@ -1,5 +1,5 @@
 apps:
-  - script: ./bin/www
+  - script: bin/www
     name: Wechat7Day
     env:
       COMMON_VARIABLE: true
@@ -18,5 +18,6 @@ deploy:
     pre-deploy: git fetch --all
     post-deploy: 'npm i && pm2 startOrRestart ecosystem.yaml --env production'
     env:
+      "PORT": 80,
       NODE_ENV: production
     
