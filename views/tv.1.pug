@@ -1,0 +1,91 @@
+extends layout
+block content
+    .row-fluid
+        .page-header
+          div.row
+            img.center-block(src=img, alt="", srcset="")
+          h1.center-block.text-center=title
+             .list-group
+                each playList  in playNumList.reverse() 
+                        a.list-group-item.playLink(href="javascript:void(0)" data-href=playList.playLink)
+                            h3.list-group-item-heading.active=playList.num
+                                  p.list-group-item-text=playList.playLinkTitle
+
+        #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+            .modal-dialog.modal-lg
+               .modal-content
+                    .modal-header#myModalLabel
+                    .modal-body
+                        #loding  增在加载，请稍后
+                        #videoModal
+        .alert.alert-dange(role='alet') 增在加载，请稍后 
+    script.
+        var player =null
+        let playLinkHref =null
+        $(document).ready(function(){
+            $('.playLink').click(function(){
+                        const  url =$(this).data('href')
+                        $('#myModal').modal('show')
+                        $('#myModalLabel').html($(this).text())
+                        if(playLinkHref ===url){
+                            if(player &&player.play){
+                                player.play()
+                            }
+                        return
+                        }
+                        playLinkHref = url
+                        $('#loding').show()
+                        getPlayUrl(url)
+                    })
+            $('#myModal').on('hidden.bs.modal',function(e){
+                if(player &&player.pause){
+                    var a = player.pause()
+                } 
+            })
+        })
+                  function getPlayUrl(url){
+                
+                    $('#videoModal').hide()
+
+                $.get(
+                    '/search/getPlayUrl?type=dianying&url='+url,function(data,status){
+                        if(data.startsWith('http'))
+                        $('#videoModal').show()
+                        $('#loding').hide()
+
+                           playByDPlayer(data)
+                        }
+                )}
+
+                function playByDPlayer(url){
+                    if(!player){
+                        
+                        player = new DPlayer({
+                            container: document.getElementById('videoModal'),
+                            screenshot: true,
+                            video:{
+                                url:url,
+                            }
+                        })
+                        player.on('play',function(){
+                            
+                        })                      
+                   
+                    }else{              
+                        if(player.options.video.url ==url){
+                            player.play()
+                            return
+                        }
+                        player.switchVideo({
+                            url:url,
+                            type:'auto'
+                        })
+                    }
+                }
+
+        function getPlayType(url){
+            if(url.split('?')[0].endsWith('.mp4')){
+                return 'video/mp4'
+            }
+            return "application/x-mpegURL"
+        }

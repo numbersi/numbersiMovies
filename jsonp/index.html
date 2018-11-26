@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>    
+
+</head>
+<body>
+    <button id="btn">ssss</button>
+   
+</body>
+<script>
+    function showData (data) {
+            console.info("调用showData");
+            var result = JSON.stringify(data);
+            alert(result)
+        }
+
+    $(document).ready(function () {
+
+        $("#btn").click(function () {
+
+            $.ajax({
+                url: "https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=47&year=2018&api=mgtv&month=0&isNew=0",
+                type: "GET",
+                // dataType: "jsonp",  //指定服务器返回的数据类型
+                // jsonpCallback: "showData",  //指定回调函数名称
+                success: function (data) {
+                    console.info("调用success");
+                    console.info(data);
+                }
+            });
+        });
+
+    });
+</script>
+</html>

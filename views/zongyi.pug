@@ -1,0 +1,133 @@
+extends layout
+block content
+    .row-fluid
+        h1.text-center=title
+        //- img(src=img, alt="", srcset="")
+        #playLinks
+        #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
+            .modal-dialog.modal-lg
+                #videoModal.modal-content
+                    .modal-header#myModalLabel
+                    .modal-body
+                        p#loding 正在加载
+                        video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
+                            source
+    script.
+        let player =null
+           $(document).ready(function () {
+
+            $('#myModal').on('hidden.bs.modal',function(e){
+                if(player &&player.pause) player.pause()
+            })
+
+            var html = '';  //定义html
+             $.ajax({
+                    url: "https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=47&year=2018&api=mgtv&month=0&isNew=0",
+                    type: "GET",
+                    // dataType: "jsonp",  //指定服务器返回的数据类型
+                    // jsonpCallback: "showData",  //指定回调函数名称
+                    success: function (data) {
+                        console.info("调用success");
+                        data = JSON.parse(data)
+                        //- alert(typeof(data.searchList))
+                        /**
+                            actor: ""
+                            apiname: "mgtv"
+                            did: "47"
+                            fullIssue: "第2018-06-02期"
+                            fullShowTopic: "NINE PERCENT合体花样秀演技"
+                            id: "4557822"
+                            img: "http://2img.mgtv.com/preview/sp_images/2018/zongyi/320519/4415944/20180602203207758.jpg_220x123.jpg"
+                            ispay: "0"
+                            issue: "2018-06-02期"
+                            preview: "0"
+                            shortIssue: "06-02期"
+                            showtopic: "NINE PERCENT合体花样秀演技"
+                            topic: "NINE PERCENT合体花样秀演技"
+                            url: "http://www.mgtv.com/b/320519/4415944.html?cxid=94gw9uoaq"
+                        */
+                         $.each(data.searchList, function(){     
+                                html +=`
+                                            <a class="playLink" href="javascript:void(0)" data-href="${this.url}">
+                                                <div class="pic">
+                                                    <img src="${this.img}" alt="${this.showtopic}">
+                                                </div>
+                                                <div class="tet">
+                                                    <span class="sTit">
+                                                        ${this.fullIssue}
+                                                        <em>
+                                                        ${this.topic}
+                                                        </em>
+                                                    </span>
+                                                </div> 
+                                            </a>
+                                     `
+                        });  
+                        $(playLinks).html(html)
+                        $('.playLink').click(playLinkClick)
+                        }
+                });
+             });
+             function playLinkClick(){
+                    playerIndex = $(this).next()
+                    const  url =$(this).data('href')
+                    $('#myModal').modal('show')
+                    $('#loding').show()
+                    $('#my-player').hide()
+                    $('#myModalLabel').html($(this).text())
+                    getPlayUrl(url)
+             }
+            function getPlayUrl(url){
+                        $.get(
+                            '/search/getPlayUrl?type=dianying&url='+url,
+                            function(data,status){
+                                $('#loding').hide()
+                                $('#my-player').show()
+                                if(data.startsWith('http')){
+                                    const playType = getPlayType(data)
+                                    if(!player){
+                                    player = videojs('my-player',{
+                                        poster: "",
+                                        controls: true,
+                                            playbackRates: [0.5, 1, 1.5, 2],
+                                        sources: [{
+                                                src: data,
+                                                type: playType //"application/x-mpegURL"//'video/mp4'
+                                            }]
+                                    },function(){
+                                        this.on('play',function(){
+                                                console.log('正在播放');
+                                            }); 
+                                            //暂停--播放完毕后也会暂停
+                                            this.on('pause',function(){
+                                                        console.log("暂停中")
+                                                    }); 
+                                            // 结束
+                                            this.on('ended', function() {
+                                                console.log('结束');
+                                                if(playerIndex){
+                                                playerIndex.click()
+                                                }
+                                            })
+                                    });
+                                    }else{
+                                        if(player.options_.sources[0].src ==data){
+                                            console.log('一样对地址')
+                                            player.play()
+                                            return
+                                        }
+                                        player.src({
+                                                src: data,
+                                                type: playType //"application/x-mpegURL"//'video/mp4'
+                                        })
+                                    }
+                                }
+                            }
+                        )}
+
+                function getPlayType(url){
+                    if(url.split('?')[0].endsWith('.mp4')){
+                        return 'video/mp4'
+                    }
+                    return "application/x-mpegURL"
+                }
