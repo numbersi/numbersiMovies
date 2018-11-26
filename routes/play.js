@@ -110,5 +110,15 @@ async function jxDianying(html){
   }
 }
 async function jxZongyi(html){
+  var $ = cheerio.load(iconv.decode(html, 'gb2312'))
+  const img = $('.pic img').attr('src')
+  const title = $('.tit h1').text()
+
+  return {
+    img,
+    title,
+    getPlayLinksApi:'https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=39366&year=2018&api=mgtv&month=0&isNew=0'
+  }
+
 }
 module.exports = router

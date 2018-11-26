@@ -7,48 +7,81 @@ block content
           h1.center-block.text-center=title
              .list-group
                 each playList  in playNumList.reverse() 
-                
                         a.list-group-item.playLink(href="javascript:void(0)" data-href=playList.playLink)
                             h3.list-group-item-heading.active=playList.num
                                   p.list-group-item-text=playList.playLinkTitle
 
         #myModal.modal.fade.bd-example-modal-lg(tabindex="-1", role="dialog", aria-labelledby="myLargeModalLabel", aria-hidden="true")
             .modal-dialog.modal-lg
-            #videoModal.modal-content
-                video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" controls)
-                    source
+               #videoModal.modal-content
+                .modal-header#myModalLabel
+                .modal-body
+                    p#loding 正在加载
+                    video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
+                        source
+        
     script.
         var player =null
+        var playerIndex =null
         $(document).ready(function(){
             $('.playLink').click(function(){
-                        const  url =$(this).data('href')
+                    playerIndex = $(this).next()
+                    const  url =$(this).data('href')
+                    $('#myModal').modal('show')
+                    $('#loding').show()
+                    $('#my-player').hide()
+                    $('#myModalLabel').html($(this).text())
                         getPlayUrl(url)
                     })
             $('#myModal').on('hidden.bs.modal',function(e){
                 if(player &&player.pause) player.pause()
             })
         })
-                  function getPlayUrl(url){
+        function getPlayUrl(url){
                 $.get(
-                    '/search/getPlayUrl?type=dianying&url='+url,function(data,status){
-                        if(data.startsWith('http'))
-                           $('source').attr('src',data)
-                            $('source').attr('type',"application/x-mpegURL")
-                            $('#myModal').modal('show')
-                            $('#myModalLabel').html('#{title}')
+                    '/search/getPlayUrl?type=dianying&url='+url,
+                    function(data,status){
+                        $('#loding').hide()
+                        $('#my-player').show()
+                        if(data.startsWith('http')){
                             const playType = getPlayType(data)
-                                        console.log(playType)
-                                        console.log(data)
                             if(!player){
                                player = videojs('my-player',{
+                                   poster: "",
+                                   controls: true,
+                                    playbackRates: [0.5, 1, 1.5, 2],
                                    sources: [{
                                         src: data,
                                         type: playType //"application/x-mpegURL"//'video/mp4'
                                     }]
+                               },function(){
+                                   this.on('play',function(){
+                                        console.log('正在播放');
+                                    }); 
+                                    //暂停--播放完毕后也会暂停
+                                    this.on('pause',function(){
+                                                console.log("暂停中")
+                                            }); 
+                                    // 结束
+                                    this.on('ended', function() {
+                                        console.log('结束');
+                                        if(playerIndex){
+                                         playerIndex.click()
+                                        }
+                                    })
                                });
-
+                            }else{
+                                if(player.options_.sources[0].src ==data){
+                                    player.play()
+                                    return
+                                }
+                                player.src({
+                                        src: data,
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
+                                })
                             }
                         }
+                    }
                 )}
 
         function getPlayType(url){
