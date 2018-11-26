@@ -1,6 +1,6 @@
 module.exports = {
 
-  host:'http://javaxxx.vicp.cc:14762',//'http://127.0.0.1:4444',///
+  host:'http://tv.numbersi.cn',//'http://127.0.0.1:4444',///
   port :3008,
   db:'mongodb://numbersi:a4851217@ds031108.mlab.com:31108/wechat7',
   wechat: {
