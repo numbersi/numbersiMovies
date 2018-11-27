@@ -88,13 +88,13 @@ module.exports = (config, reply) => {
         ctx.body = xml
       }
     }else{
-      // console.log(ctx.request.header['user-agent']);
-      // if(ctx.request.header['user-agent'].match(/MicroMessenger/i) == 'micromessenger'){
-      //   console.log('微信');
+      console.log(ctx.request.header['user-agent']);
+      if(ctx.request.header['user-agent'].match(/MicroMessenger|Android|webOS|iPhone|iPod|BlackBerry|IEMobile/i/i) == 'micromessenger'){
+        console.log('微信');
         await next()
-      // }else{
-      //     ctx.body ="请关注 微信公众号 ，回复你所想要看的视频 ， 腾讯视频，爱奇艺视频，优酷视频，芒果视频"
-      // }
+      }else{
+          ctx.body ="请关注 微信公众号 ，回复你所想要看的视频 ， 腾讯视频，爱奇艺视频，优酷视频，芒果视频"
+      }
       
 
     }
