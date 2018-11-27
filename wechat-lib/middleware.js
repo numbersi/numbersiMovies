@@ -89,7 +89,7 @@ module.exports = (config, reply) => {
       }
     }else{
       console.log(ctx.request.header['user-agent']);
-      if(ctx.request.header['user-agent'].match(/MicroMessenger|Android|webOS|iPhone|iPod|BlackBerry|IEMobile/i) == 'micromessenger'){
+      if(ctx.request.header['user-agent'].match(/MicroMessenger/i) == 'micromessenger'){
         console.log('微信');
         await next()
       }else{
