@@ -109,7 +109,15 @@ module.exports = (config, reply) => {
         ctx.body = xml
       }
     }else{
-      await next()
+      console.log(ctx.request.header['user-agent']);
+      if(ctx.request.header['user-agent'].match(/MicroMessenger/i) == 'micromessenger'){
+        console.log('微信');
+        await next()
+
+      }else{
+          ctx.body ="请关注 微信公众号 ，回复你所想要看的视频 ， 腾讯视频，爱奇艺视频，优酷视频，芒果视频"
+      }
+      
 
     }
     console.log('end middleware')

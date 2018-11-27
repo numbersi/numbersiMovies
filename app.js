@@ -40,6 +40,8 @@ app.use(views(__dirname + '/views', {
 
 // logger
 app.use(async (ctx, next) => {
+
+
   const start = new Date()
   await next()
   const ms = new Date() - start
