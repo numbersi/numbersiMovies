@@ -4,25 +4,18 @@ block content
         h1=title
         img(src=img, alt="", srcset="")
         .row-12
-            button#play.btn-default() 播放
-        p#loding 正在加载
+        p#loding 正在加载,如果1分钟还没播放 请关掉从新点开
         video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
-        source
+            source
     script.
         let player =null 
         $(function() {
-            $('#loding').hide()
-            $('#play').click((e)=>{
                     $('#play').attr("disabled",true);
                     $('#loding').show()
                     $('#my-player').hide()
-                    $('#myModalLabel').html($(this).text())
                     getPlayUrl()
-            })
-
           });
            function getPlayUrl(){
-                  $('#loading').modal('show')
                   $.get(
                       '/search/getPlayUrl?type=dianying&url=#{playLink}',
                       function(data,status){  
