@@ -10,7 +10,9 @@ exports.reply = async (ctx, next)=>{
     let crawler2345  = new Crawler2345()
     let searchData=  await crawler2345.searchByKey(content)
     console.log('searchData',searchData);
-    
+    if(!searchData){
+      
+    }
     ctx.body =searchData
   }else if (message.MsgType === 'event') {
     let reply = ''
