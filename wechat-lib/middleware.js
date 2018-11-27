@@ -72,27 +72,6 @@ module.exports = (config, reply) => {
         console.error(replyBody)
         const msg = ctx.weixin
 
-        let news = [{
-          title: '这是TiTle',
-          description: "这是description",
-          picUrl: 'http://imgwx5.2345.com/dypcimg/top/images/focusTailor/video/20181120/0050e9dbd253922a2923954bbaa6fa7e.jpg',
-          url: 'http://kan.2345.com/m/'
-        }, {
-          title: '这是TiTle',
-          description: "这是description",
-          picUrl: 'http://imgwx5.2345.com/dypcimg/top/images/focusTailor/video/20181120/0050e9dbd253922a2923954bbaa6fa7e.jpg',
-          url: 'http://kan.2345.com/m/'
-        }, {
-          title: '这是TiTle',
-          description: "这是description",
-          picUrl: 'http://imgwx5.2345.com/dypcimg/top/images/focusTailor/video/20181120/0050e9dbd253922a2923954bbaa6fa7e.jpg',
-          url: 'http://kan.2345.com/m/'
-        }, {
-          title: '这是TiTle',
-          description: "这是description",
-          picUrl: 'http://imgwx5.2345.com/dypcimg/top/images/focusTailor/video/20181120/0050e9dbd253922a2923954bbaa6fa7e.jpg',
-          url: 'http://kan.2345.com/m/'
-        }]
         let music = {
           type: 'music',
           title: 'asd',
@@ -109,14 +88,13 @@ module.exports = (config, reply) => {
         ctx.body = xml
       }
     }else{
-      console.log(ctx.request.header['user-agent']);
-      if(ctx.request.header['user-agent'].match(/MicroMessenger/i) == 'micromessenger'){
-        console.log('微信');
+      // console.log(ctx.request.header['user-agent']);
+      // if(ctx.request.header['user-agent'].match(/MicroMessenger/i) == 'micromessenger'){
+      //   console.log('微信');
         await next()
-
-      }else{
-          ctx.body ="请关注 微信公众号 ，回复你所想要看的视频 ， 腾讯视频，爱奇艺视频，优酷视频，芒果视频"
-      }
+      // }else{
+      //     ctx.body ="请关注 微信公众号 ，回复你所想要看的视频 ， 腾讯视频，爱奇艺视频，优酷视频，芒果视频"
+      // }
       
 
     }

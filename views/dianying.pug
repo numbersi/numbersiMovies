@@ -1,22 +1,80 @@
 extends layout
 block content
-    h1=title
-    img(src=img, alt="", srcset="")
-    video#my-player
+    .row-fluid.text-center
+        h1=title
+        img(src=img, alt="", srcset="")
+        .row-12
+            button#play.btn-default() 播放
+        p#loding 正在加载
+        video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
+        source
     script.
+        let player =null 
         $(function() {
-           const  url= $('#video').data('url')
-           if(url){
-            getPlayUrl(url)
-           }
+            $('#loding').hide()
+            $('#play').click((e)=>{
+                    $('#play').attr("disabled",true);
+                    $('#loding').show()
+                    $('#my-player').hide()
+                    $('#myModalLabel').html($(this).text())
+                    getPlayUrl()
+            })
+
           });
-              function getPlayUrl(url){
+           function getPlayUrl(){
                   $('#loading').modal('show')
-            
                   $.get(
-                      '/search/getPlayUrl?type=dianying&url='+url,function(data,status){  
-
-
+                      '/search/getPlayUrl?type=dianying&url=#{playLink}',
+                      function(data,status){  
+                        $('#play').attr("disabled",false);
+                        $('#loding').slideToggle()
+                        $('#my-player').show()
+                        if(data.startsWith('http')){
+                            const playType = getPlayType(data)
+                            if(!player){
+                               player = videojs('my-player',{
+                                   poster: "",
+                                   controls: true,
+                                    playbackRates: [0.5, 1, 1.5, 2],
+                                   sources: [{
+                                        src: data,
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
+                                    }]
+                               },function(){
+                                   this.on('play',function(){
+                                        console.log('正在播放');
+                                    }); 
+                                    //暂停--播放完毕后也会暂停
+                                    this.on('pause',function(){
+                                                console.log("暂停中")
+                                            }); 
+                                    // 结束
+                                    this.on('ended', function() {
+                                        console.log('结束');
+                                        if(playerIndex){
+                                         playerIndex.click()
+                                        }
+                                    })
+                               });
+                            }else{
+                                if(player.options_.sources[0].src ==data){
+                                    player.play()
+                                    return
+                                }
+                                player.src({
+                                        src: data,
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
+                                })
+                            }
+                        }
                       }
                   )
               }
+                     function getPlayType(url){
+            if(url.split('?')[0].endsWith('.mp4')){
+                return 'video/mp4'
+            }
+            return "application/x-mpegURL"
+        }
+
+             

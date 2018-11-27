@@ -1,10 +1,10 @@
 extends layout
 block content
-    .row-fluid
+    .row-fluid.text-center
         .page-header
           div.row
-            img.center-block(src=img, alt="", srcset="")
-          h1.center-block.text-center=title
+          img.center-block(src=img, alt="", srcset="")
+          h1.center-block.text-center(style="color:red")=title
              .list-group
                 each playList  in playNumList.reverse() 
                         a.list-group-item.playLink(href="javascript:void(0)" data-href=playList.playLink)
@@ -31,7 +31,7 @@ block content
                     $('#loding').show()
                     $('#my-player').hide()
                     $('#myModalLabel').html($(this).text())
-                        getPlayUrl(url)
+                    getPlayUrl(url)
                     })
             $('#myModal').on('hidden.bs.modal',function(e){
                 if(player &&player.pause) player.pause()
