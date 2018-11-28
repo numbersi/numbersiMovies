@@ -32,13 +32,9 @@ module.exports = class Wechat {
   //  获取TOken
   async fetchAccessToken() {
     let data =await this.getAccessToken()
-
-
-    
     if (!this.isVaildToken(data)) {
       data = await this.updateAccessToken()
     }
-
     await this.saveAccessToken(data)
     return data
   }
