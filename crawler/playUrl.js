@@ -17,7 +17,7 @@ await page.setUserAgent(userAgent)
 await page.goto(url, {
     waitUntil: 'networkidle2'
 })
-await sleep(0000)
+await sleep(3000)
 
 const a = await page.frames()
 

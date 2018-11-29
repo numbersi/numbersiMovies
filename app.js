@@ -10,6 +10,7 @@ const index = require('./routes/index')
 const users = require('./routes/users')
 const search = require('./routes/search')
 const play = require('./routes/play')
+const collect = require('./routes/collect')
 
 const Router = require('koa-router')
 const wechat = require('./wechat-lib/middleware')
@@ -55,6 +56,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(search.routes(), search.allowedMethods())
 app.use(play.routes(), play.allowedMethods())
+app.use(collect.routes(), collect.allowedMethods())
 
 // require('./config/router')(router)
 

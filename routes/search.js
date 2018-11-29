@@ -10,7 +10,8 @@ router.prefix('/search')
 router.get('/movie/:kw', async (ctx, next) => {
 //    动态路由 获取关键词 
     kw=ctx.params.kw
-    let data =await searchDataFrom360kan(kw)
+    const {type} = ctx.query
+    let data =await searchDataFrom360kan(kw,type)
     await ctx.render('search',{data:data})
 
 })
@@ -73,7 +74,7 @@ function decodeTab(codeTab){
     let tabs =  new Buffer(codeTab, 'base64').toString().split('$')
     return tabs.sort(function(a,b){return b.length - a.length;});
 }
-async function  searchDataFrom360kan(kw){
+async function  searchDataFrom360kan(kw,type){
     // url = `https://so.360kan.com/index.php?kw=${kw}&from=`
     url ='https://so.360kan.com/index.php?kw='+encodeURIComponent(kw)+'&from='
     console.log(url);
@@ -81,26 +82,31 @@ async function  searchDataFrom360kan(kw){
     const html  =  await request(url)
     var $ = cheerio.load(html)
     var movieList = [];
-
-    ['zongyi','dianying','dianshi'].forEach((type)=>{
+    if(type){
         $('.index-'+type).each(function(){
             let $this = $(this);
             movieList = aa($,$this,movieList,type)
         })
-    // $('.index-zongyi').each(function(){
-    //     let $this = $(this);
-    //     movieList = aa($,$this,movieList,)
-    // })
-    // $('.index-dianying').each(function(){
-    //     let $this = $(this);
-    //     movieList = aa($,$this,movieList)
+    }
+    // ['zongyi','dianying','dianshi'].forEach((type)=>{
+    //     $('.index-'+type).each(function(){
+    //         let $this = $(this);
+    //         movieList = aa($,$this,movieList,type)
+    //     })
+    // // $('.index-zongyi').each(function(){
+    // //     let $this = $(this);
+    // //     movieList = aa($,$this,movieList,)
+    // // })
+    // // $('.index-dianying').each(function(){
+    // //     let $this = $(this);
+    // //     movieList = aa($,$this,movieList)
        
+    // // })
+    // // $('.index-dianshi').each(function(){
+    // //     let $this = $(this);
+    // //     movieList = aa($,$this,movieList)
+    // // })
     // })
-    // $('.index-dianshi').each(function(){
-    //     let $this = $(this);
-    //     movieList = aa($,$this,movieList)
-    // })
-    })
     return movieList
 }
 function aa($,dom,movieList,type){

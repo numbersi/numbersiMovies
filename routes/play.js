@@ -57,7 +57,7 @@ async function getDataBy2345Url(url){
   return {template,data}
 }
 async function jxTv(html){
-  const playSources = ['mgtv_con','qq_con','youku_con','qiyi_con','pptv_con']
+  const playSources = ['mgtv_con','youku_con','qq_con','youku_con','qiyi_con','pptv_con']
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
   const img = $('.pic img').attr('src')
   const title = $('.tit a').attr('title')

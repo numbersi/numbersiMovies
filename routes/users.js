@@ -8,6 +8,7 @@ router.prefix('/')
 router.get('/', async function (ctx, next) {
   const {wd} = ctx.query
   const kan360 =  new Kan360({wd})
+  
   ctx.body = await kan360.searchApi()
 })
 router.get('/search2345', async function(ctx,next){
