@@ -25,6 +25,7 @@ router.get('/', async (ctx, next) => {
 
 async function getDataBy2345Url(url){
   const urlType = url.split('//')[1].split('.')[0]
+  const  id = url.split('_').pop()  
   const html  =  await request({url, encoding: null})
   let data
   let template 
@@ -44,7 +45,7 @@ async function getDataBy2345Url(url){
     template='tv'
       break;
     case 'kan':
-    data = await jxZongyi(html)
+    data = await jxZongyi(html,id)
     template='zongyi'
     console.log(data);
     
@@ -111,15 +112,15 @@ async function jxDianying(html){
     playLink:playSourceUrl
   }
 }
-async function jxZongyi(html){
+async function jxZongyi(html,id){
+
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
   const img = $('.pic img').attr('src')
   const title = $('.tit h1').text()
-
   return {
     img,
     title,
-    getPlayLinksApi:'https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=39366&year=2018&api=mgtv&month=0&isNew=0'
+    getPlayLinksApi:`https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=${id}&year=2018&api=mgtv&month=0&isNew=0`
   }
 
 }
