@@ -1,6 +1,7 @@
 extends layout
 block content
     .row-fluid
+        input(type="hidden", name="",data-url=getPlayLinksApi)
         h1.text-center=title
         //- img(src=img, alt="", srcset="")
         #playLinks
@@ -21,8 +22,9 @@ block content
             })
 
             var html = '';  //定义html
+            var url = $('input').data('url')
              $.ajax({
-                    url: "https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=47&year=2018&api=mgtv&month=0&isNew=0",
+                    url: url,//"https://kan.2345.com/moviecore/server/variety/?ctl=newDetail&act=ajaxList&id=47&year=2018&api=mgtv&month=0&isNew=0",
                     type: "GET",
                     // dataType: "jsonp",  //指定服务器返回的数据类型
                     // jsonpCallback: "showData",  //指定回调函数名称

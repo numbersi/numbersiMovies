@@ -8,6 +8,8 @@ var iconv = require('iconv-lite');
 
 // var Buffer = require('buffer')
 router.prefix('/play')
+
+
 router.get('/', async (ctx, next) => {
   url=ctx.query.url
   //  获取 qurey 2345 地址
@@ -44,13 +46,15 @@ async function getDataBy2345Url(url){
     case 'kan':
     data = await jxZongyi(html)
     template='zongyi'
+    console.log(data);
+    
       break;
     default:
+     template='no'
       break;
   }
   return {template,data}
 }
-
 async function jxTv(html){
   const playSources = ['mgtv_con','qq_con','youku_con','qiyi_con','pptv_con']
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
@@ -61,13 +65,12 @@ async function jxTv(html){
   for (let index = 0; index < playSources.length; index++) {
     const itemSource = playSources[index];
     playNumList_element = $(`#${itemSource}`)
-    
     if (playNumList_element.text()){
       $(playNumList_element).find('a').each((index,a)=>{
             const  num = $(a).find('.num').text().trim()
             const  playLink = $(a).attr('href').split('?')[0]
             const  playLinkTitle = $(a).attr('title')
-          if (num){
+          if (num&& !playLinkTitle.includes('预告片')){
             playNumList.push({num,playLink , playLinkTitle})
           }
       })
@@ -84,7 +87,6 @@ async function jxTv(html){
 }
 
 async function jxDianying(html){
-  // 顺序表
   const playSources = ['mgtv_0','youku_0','qq_0','mgtv_0','qiyi_0','pptv_0']
   var $ = cheerio.load(iconv.decode(html, 'gb2312'))
   let playSourceUrl  =''
