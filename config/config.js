@@ -9,7 +9,7 @@ module.exports = {
     token: 'imoocisareallyamzingplacetolearn'
   },
   sources:{
-    'zuida':'http://www.zdziyuan.com/inc/api_zuidam3u8.php',
+    'zuida':'http://www.zdziyuan.com/inc/s_api_zuidam3u8.php',
     'tv6':'http://v10.tv6.com/api.php/provide/vod/at/xml/',
   },
 }
