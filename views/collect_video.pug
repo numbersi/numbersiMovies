@@ -7,9 +7,7 @@ block content
         p.page__desc=director.join('/')
         p.page__desc=actor.join('/')
         img(src=pic, alt="", srcset="")
-
         p.page__desc=des.join('/')
-
       .page__bd
               <div class="weui-tab">
               -var dd = dl[0].dd
@@ -58,9 +56,11 @@ block scriptCode
               $(".weui-loadmore").show()
               const  url =$(this).data('href')
               if(url.endsWith('.m3u8')){
+
                  getplayer(url)
+              }else{
+               getPlayUrl(url)
               }
-              getPlayUrl(url)
             })
         })
       function getPlayUrl(url){
