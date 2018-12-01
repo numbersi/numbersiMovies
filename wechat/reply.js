@@ -9,7 +9,7 @@ exports.reply = async (ctx, next)=>{
     reply  ='这是文本回复:'+content
     // let searchData=  await crawler2345.searchByKey(content)
     // console.log('searchData',searchData);
-    const url_long = require('../config/config').host + '/collect?wd='+content
+    const url_long = require('../config/config').host + '/collect?wd='+encodeURIComponent(content)
     const url_short = await getDwz(url_long)
     reply =url_short
   }else if (message.MsgType === 'event') {

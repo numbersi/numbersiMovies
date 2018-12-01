@@ -1,21 +1,15 @@
 const router = require('koa-router')()
-// const Kan360 =require('../lib/crawler360kan')
-// const {getDwz} =require('../lib/util')
 const mongoose = require('mongoose')
 const CollectLib = require('../lib/lib-collect')
 router.prefix('/collect')
-
-// 获取采集资源列表
 router.get('/', async function (ctx, next) {
   const {wd,ids,source} = ctx.query
   const collectlib = new CollectLib({source:source})
-
   if(wd){
     await searchFromDB(ctx,(ctx,next))
     data = await collectlib.searchBuWd(wd)
     data['title']=wd
     data['movies']=ctx.movie
-    // ctx.body = data
     await ctx.render('collect',data)
   }
   // await ctx.render('collect',data)
