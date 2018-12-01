@@ -8,4 +8,8 @@ module.exports = {
     appSecret: 'c4212df8b8902783840a4cee8aa42730',
     token: 'imoocisareallyamzingplacetolearn'
   },
+  sources:{
+    'zuida':'http://www.zdziyuan.com/inc/api_zuidam3u8.php',
+    'tv6':'http://v10.tv6.com/api.php/provide/vod/at/xml/',
+  },
 }

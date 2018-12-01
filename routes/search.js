@@ -13,7 +13,6 @@ router.get('/movie/:kw', async (ctx, next) => {
     const {type} = ctx.query
     let data =await searchDataFrom360kan(kw,type)
     await ctx.render('search',{data:data})
-
 })
 
 router.get('/play/:type/:tabs', async (ctx,next)=>{

@@ -1,0 +1,119 @@
+extends layout_jqweui
+block content
+    .page.js_show.list
+      .page__hd
+        h1.page__title=name
+        p.page__desc=type+"/"+note.join('/')+"/"+area.join('/')
+        p.page__desc=director.join('/')
+        p.page__desc=actor.join('/')
+        img(src=pic, alt="", srcset="")
+
+        p.page__desc=des.join('/')
+
+      .page__bd
+              <div class="weui-tab">
+              -var dd = dl[0].dd
+                .weui-navbar
+                  each item  in dd
+                    a(class="weui-navbar__item " href="#"+item.$.flag)=item.$.flag
+                .weui-tab__bd
+                  each item ,k in dd
+                      div(id=item.$.flag class="weui-tab__bd-item")
+                        each playItem in item._.split('#')
+                          -var urls= playItem.split('$')[1]
+                          -var notes=playItem.split('$')[0]
+                              .weui-cells
+                                a(class="weui-cell weui-cell_access playLink open-popup"  data-target="" data-href=urls)
+                                  .weui-cell__bd
+                                    h1=notes
+                                  .weui-cell__ft
+                                    small 播放
+      <div id="video" class="weui-popup__container" style="z-index:501">
+        <div class="weui-popup__overlay"></div>
+        <div class="weui-popup__modal" style="z-index:501">
+                <div class="weui-loadmore">
+                    <i class="weui-loading"></i>
+                    <span class="weui-loadmore__tips">正在加载</span>
+                    </div>
+                    <div class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+                    <span class="weui-loadmore__tips"></span>
+                </div>
+                video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
+                    source
+        </div>
+      </div>
+block scriptCode
+    script.
+        var player =null
+        var playerIndex =null
+        $(document).ready(function(){
+            $('.weui-navbar__item:first').addClass('weui-bar__item--on')
+            $('.weui-popup__modal').click(function(){
+                $.closePopup()
+            })
+            $('.weui-tab__bd-item:first').addClass('weui-tab__bd-item--active')
+            $('.playLink').click(function(){
+              $("#video").popup();
+              $("#my-player").hide()
+              $(".weui-loadmore").show()
+              const  url =$(this).data('href')
+              if(url.endsWith('.m3u8')){
+                 getplayer(url)
+              }
+              getPlayUrl(url)
+            })
+        })
+      function getPlayUrl(url){
+                $.get(
+                    '/search/getPlayUrl?type=dianying&url='+url,
+                    function(data,status){
+                        playerIndex = $(this).next()
+                        getplayer(data)
+                    }
+                )}
+      function  getplayer(data){
+          $("#my-player").show()
+          $(".weui-loadmore").hide()
+         const playType = getPlayType(data)
+          if(!player){
+               player = videojs('my-player',{
+                                   poster: "",
+                                   controls: true,
+                                    playbackRates: [0.5, 1, 1.5, 2],
+                                   sources: [{
+                                        src: data,
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
+                                    }]
+                               },function(){
+                                   this.on('play',function(){
+                                        console.log('正在播放');
+                                    }); 
+                                    //暂停--播放完毕后也会暂停
+                                    this.on('pause',function(){
+                                                console.log("暂停中")
+                                            }); 
+                                    // 结束
+                                    this.on('ended', function() {
+                                        console.log('结束');
+                                        if(playerIndex){
+                                         playerIndex.click()
+                                        }
+                                    })
+                               });
+                            }else{
+                                if(player.options_.sources[0].src ==data){
+                                    player.play()
+                                    return
+                                }
+                                player.src({
+                                        src: data,
+                                        type: playType //"application/x-mpegURL"//'video/mp4'
+                                })
+                            }
+        }
+        function getPlayType(url){
+            if(url.split('?')[0].endsWith('.mp4')){
+                return 'video/mp4'
+            }
+            return "application/x-mpegURL"
+        }

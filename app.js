@@ -20,9 +20,12 @@ onerror(app)
 const router = new Router()
 
 //数据库 
-const { connect } = require('./app/database/init')
+const { connect ,initSchemas } = require('./app/database/init')
 ;(async function () {
- await  connect(config.db)
+   await initSchemas()
+   console.log('initSchemas');
+   
+   await  connect(config.db)
 })()
 
 

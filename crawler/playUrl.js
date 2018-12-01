@@ -17,12 +17,8 @@ await page.setUserAgent(userAgent)
 await page.goto(url, {
     waitUntil: 'networkidle2'
 })
-await sleep(3000)
-
 const a = await page.frames()
-
 try {
-    
     if (a.length>1) {
         playUrl = await a[a.length - 1].$eval('video', v => v.src)
     }else{
@@ -34,5 +30,4 @@ try {
 }finally{
     browser.close()
 }
-
 })()
