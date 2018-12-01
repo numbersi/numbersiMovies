@@ -4,7 +4,18 @@ html
     meta(charset='utf-8')
     title #{title}
     include ./includes/head
-  body
+  body(id="copy" data-clipboard-text="529202631")
     block content
   include ./includes/script
   block scriptCode
+  <script src="https://static.runoob.com/assets/clipboard.min.js"></script>  
+  script.
+        var clipboard = new Clipboard("#copy")
+
+        clipboard.on("success", function(e) {
+          console.log(e)
+        })
+        clipboard.on("error", function(e) {
+          console.log(e)
+        })
+  
