@@ -17,13 +17,14 @@ block content
                 .weui-tab__bd
                   each item ,k in dd
                       div(id=item.$.flag class="weui-tab__bd-item")
-                        each playItem in item._.split('#')
-                          -var urls= playItem.split('$')[1]
-                          -var notes=playItem.split('$')[0]
-                              .weui-cells
+                        .weui-cells
+                            #reverseBtn.weui-btn.weui-btn_primary 倒序
+                            each playItem in item._.split('#')
+                                -var urls= playItem.split('$')[1]
+                                -var notes=playItem.split('$')[0]
                                 a(class="weui-cell weui-cell_access playLink open-popup"  data-target="" data-href=urls)
                                   .weui-cell__bd
-                                    h1=notes
+                                    p=notes
                                   .weui-cell__ft
                                     small 播放
       <div id="video" class="weui-popup__container" style="z-index:501">
@@ -38,15 +39,38 @@ block content
                 </div>
                 video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
                     source
+                .weui-btn.weui-btn_primary
         </div>
       </div>
 block scriptCode
+    <link href="//vjs.zencdn.net/7.3.0/video-js.min.css" rel="stylesheet">
+    <script src="//vjs.zencdn.net/7.3.0/video.min.js"></script>
     <script src="https://cdn.bootcss.com/videojs-contrib-hls/5.14.1/videojs-contrib-hls.min.js"></script>
-    <script src="//vjs.zencdn.net/5.19/video.min.js"></script>
     script.
+    
+    
+        (function($) {
+            $.extend({
+                reverseChild : function(obj, child) { 
+                    var childObj = $(obj).find(child);
+                    var total = childObj.length; 
+
+                    childObj.each(function(i) { 
+                        $(obj).append(childObj.eq((total-1)-i)); 
+                    }); 
+
+                    //console.log(childObj.html()); 
+                }
+            });
+        })(jQuery);
         var player =null
         var playerIndex =null
         $(document).ready(function(){
+
+            //reverseChild
+            $('#reverseBtn').click(()=>{
+                $.reverseChild('#weui-cells','a')
+            })
             $('.weui-navbar__item:first').addClass('weui-bar__item--on')
             $('.weui-popup__modal').click(function(){
                 $.closePopup()
@@ -69,13 +93,15 @@ block scriptCode
                     '/search/getPlayUrl?type=dianying&url='+url,
                     function(data,status){
                         playerIndex = $(this).next()
-                        getplayer(data)
+                        const {play_url} = data
+                        getplayer(play_url)
                     }
                 )}
       function  getplayer(data){
           $("#my-player").show()
           $(".weui-loadmore").hide()
          const playType = getPlayType(data)
+            data=data.play_url
           if(!player){
                player = videojs('my-player',{
                                    poster: "",
@@ -88,6 +114,7 @@ block scriptCode
                                },function(){
                                    this.on('play',function(){
                                         console.log('正在播放');
+                                        $.toptip('操作成功', 2000, 'success'); 
                                     }); 
                                     //暂停--播放完毕后也会暂停
                                     this.on('pause',function(){
@@ -100,7 +127,11 @@ block scriptCode
                                          playerIndex.click()
                                         }
                                     })
+                                    this.on('error',function(){
+                                        console.log("出错")
+                                    })
                                });
+                               player.play()
                             }else{
                                 if(player.options_.sources[0].src ==data){
                                     player.play()
@@ -111,6 +142,7 @@ block scriptCode
                                         type: playType //"application/x-mpegURL"//'video/mp4'
                                 })
                             }
+                             
         }
         function getPlayType(url){
             if(url.split('?')[0].endsWith('.mp4')){

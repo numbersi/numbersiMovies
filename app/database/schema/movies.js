@@ -7,4 +7,3 @@ const MovieSchema = new Schema({
   title: String,
 })
 mongoose.model('Movie', MovieSchema)
-

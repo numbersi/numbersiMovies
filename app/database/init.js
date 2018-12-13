@@ -28,7 +28,6 @@ exports.connect = (db) => {
     mongoose.connection.on('error', err => {
       maxConnectTimes++
       console.log(err)
-
       if (maxConnectTimes < 5) {
         mongoose.connect(db)
       } else {

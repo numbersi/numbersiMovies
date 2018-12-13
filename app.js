@@ -1,3 +1,10 @@
+//数据库 
+const { connect ,initSchemas } = require('./app/database/init')
+;(async function () {
+  await initSchemas()     
+  await connect(config.db)
+})()
+
 const Koa = require('koa')
 const app = new Koa()
 const views = require('koa-views')
@@ -11,22 +18,14 @@ const users = require('./routes/users')
 const search = require('./routes/search')
 const play = require('./routes/play')
 const collect = require('./routes/collect')
+const api = require('./routes/api')
 
 const Router = require('koa-router')
 const wechat = require('./wechat-lib/middleware')
 const config = require('./config/config')
 // error handler
 onerror(app)
-const router = new Router()
 
-//数据库 
-const { connect ,initSchemas } = require('./app/database/init')
-;(async function () {
-   await initSchemas()
-   console.log('initSchemas');
-   
-   await  connect(config.db)
-})()
 
 
 // middlewares
@@ -60,6 +59,8 @@ app.use(users.routes(), users.allowedMethods())
 app.use(search.routes(), search.allowedMethods())
 app.use(play.routes(), play.allowedMethods())
 app.use(collect.routes(), collect.allowedMethods())
+app.use(api.routes(), api.allowedMethods())
+// var isiPad = navigator.userAgent.match(/iPad|iPhone|Linux|Android|iPod/i) != null
 
 // require('./config/router')(router)
 

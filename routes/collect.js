@@ -10,6 +10,7 @@ router.get('/', async function (ctx, next) {
     data = await collectlib.searchBuWd(wd)
     data['title']=wd
     data['movies']=ctx.movie
+    
     await ctx.render('collect',data)
   }
   // await ctx.render('collect',data)
@@ -22,16 +23,12 @@ router.get('/video',async function (ctx,next){
     data = await collectlib.getPlayLinkById(ids)
     // ctx.body= data
     await ctx.render('collect_video',data)
-
   }
 
   
 })
 //采集入库
 router.get('/:source/:ids/:title',async function (ctx,next){
-
-
-  
   const movieModel = mongoose.model('Movie')
   // await PlayUrlModel.findOne 
   console.log(ctx.params);
@@ -46,6 +43,7 @@ router.get('/find',searchFromDB)
 
 async function searchFromDB(ctx,next) {
   const movieModel = mongoose.model('Movie')
+
   const  {wd} = ctx.query
   const data = await movieModel.find({
     title: new RegExp(wd + '.*', 'i')

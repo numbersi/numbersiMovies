@@ -24,11 +24,11 @@ const sleep = time => new Promise(resolve => {
         console.log(data);
         // const video =await  openPage(page,url)
         const video =await  openPage1()
-        if(!video){
-            process.send('notFind')
-        }else{
-            process.send(video.src)
-        }
+        // if(!video){
+        //     process.send('notFind')
+        // }else{
+        //     process.send(video.src)
+        // }
     })
 
 })()
@@ -78,23 +78,4 @@ async function openPage(page,url, jiekouIndex = 0) {
     return video
 
 
-}
-async function getApiRequest(page) {
-    return new Promise((resolve, reject) => {
-        page.on('requestfinished', async function (request) {
-            if (request.method() == "POST") {
-
-                const response = request.response()
-                console.log(response.status());
-                const data = await response.json()
-                const host = request.url().split('//')[1].split('/')[0]
-                console.log(host);
-                let url = data.url
-                if (!url.startsWith('http')) {
-                    url = 'http://' + host + '/' + data.url
-                }
-                resolve(url)
-            }
-        })
-    })
 }

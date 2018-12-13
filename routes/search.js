@@ -3,7 +3,7 @@ var request = require('request-promise');
 var cheerio = require('cheerio');
 var {resolve} = require('path')
 const { exec } = require('child_process');
-
+const {getPlayUrl} = require('../lib/lib-getPlayUrl')
 // var Buffer = require('buffer')
 router.prefix('/search')
 
@@ -48,7 +48,6 @@ router.get('/play/:type/:tabs', async (ctx,next)=>{
 })
 router.get('/getPlayUrl',async (ctx,next)=>{
     url=ctx.query.url
-    const {getPlayUrl} = require('../lib/lib-getPlayUrl')
     const playUrl=  await getPlayUrl(ctx.query)
     // type = ctx.query.type
     // let jiekou ='http://app.baiyug.cn:2019/vip/index.php?url='
@@ -167,8 +166,6 @@ async function getZongyiSeriesNumber(tab){
 }
 async function getDianshiSeriesNumber(tab){
     url ='https://www.360kan.com/cover/switchsitev2?site='+tab[2]+'&id='+tab[1]+'&category='+tab[0]
-    // return
-                 ////console.log(url)
     const html  =  await request(url)
     var $ = cheerio.load(JSON. parse(html).data)
     let seriesNumber ={}
@@ -179,7 +176,6 @@ async function getDianshiSeriesNumber(tab){
                     seriesNumber[num]=$(this).attr('href')
                 }
             }
-               
         })
     ////console.log(seriesNumber)
     return seriesNumber
