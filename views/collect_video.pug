@@ -58,7 +58,6 @@ block scriptCode
                     childObj.each(function(i) { 
                         $(obj).append(childObj.eq((total-1)-i)); 
                     }); 
-
                     //console.log(childObj.html()); 
                 }
             });
@@ -101,7 +100,6 @@ block scriptCode
           $("#my-player").show()
           $(".weui-loadmore").hide()
          const playType = getPlayType(data)
-            data=data.play_url
           if(!player){
                player = videojs('my-player',{
                                    poster: "",

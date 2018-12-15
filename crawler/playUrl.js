@@ -83,7 +83,6 @@ async function getApiRequest(page) {
     return new Promise((resolve, reject) => {
         page.on('requestfinished', async function (request) {
             if (request.method() == "POST") {
-
                 const response = request.response()
                 console.log(response.status());
                 const data = await response.json()
