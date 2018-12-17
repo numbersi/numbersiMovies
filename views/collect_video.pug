@@ -18,7 +18,7 @@ block content
                   each item ,k in dd
                       div(id=item.$.flag class="weui-tab__bd-item")
                         .weui-cells
-                            #reverseBtn.weui-btn.weui-btn_primary 倒序
+                            //- #reverseBtn.weui-btn.weui-btn_primary 倒序
                             each playItem in item._.split('#')
                                 -var urls= playItem.split('$')[1]
                                 -var notes=playItem.split('$')[0]
@@ -39,7 +39,7 @@ block content
                 </div>
                 video#my-player(class="video-js vjs-fluid vjs-default-skin vjs-big-play-centered" )
                     source
-                .weui-btn.weui-btn_primary
+                .return.weui-btn.weui-btn_primary 返回
         </div>
       </div>
 block scriptCode
@@ -71,8 +71,8 @@ block scriptCode
                 $.reverseChild('#weui-cells','a')
             })
             $('.weui-navbar__item:first').addClass('weui-bar__item--on')
-            $('.weui-popup__modal').click(function(){
-                $.closePopup()
+            $('.return').click(function(){
+                revert()
             })
             $('.weui-tab__bd-item:first').addClass('weui-tab__bd-item--active')
             $('.playLink').click(function(){
@@ -96,6 +96,12 @@ block scriptCode
                         getplayer(play_url)
                     }
                 )}
+
+      function  revert(){
+                if(player &&player.pause) player.pause()
+                $.closePopup()
+
+      }
       function  getplayer(data){
           $("#my-player").show()
           $(".weui-loadmore").hide()
