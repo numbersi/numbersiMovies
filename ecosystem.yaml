@@ -14,7 +14,7 @@ deploy:
     repo: git@github.com:numbersi/numbersiMovies.git
     path: /var/www/html/wechat/production
     ssh_options: StrictHostKeyChecking=no
-    pre-deploy: git fetch --all
+    pre-deploy: git pull 
     post-deploy: 'npm i && pm2 startOrRestart ecosystem.yaml --env production'
     env:
       NODE_ENV: production
