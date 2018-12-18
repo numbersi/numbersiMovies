@@ -10,7 +10,6 @@ deploy:
     user: ubuntu
     host:
       - 111.230.195.88
-    port: '22'
     ref: origin/master
     repo: git@github.com:numbersi/numbersiMovies.git
     path: /var/www/html/wechat/production
@@ -18,6 +17,5 @@ deploy:
     pre-deploy: git fetch --all
     post-deploy: 'npm i && pm2 startOrRestart ecosystem.yaml --env production'
     env:
-      "PORT": 80,
       NODE_ENV: production
     
