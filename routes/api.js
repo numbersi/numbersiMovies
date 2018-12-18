@@ -26,5 +26,8 @@ router.get('/checkMd5Html',async function(ctx,next){
   const {category,md5_html}  = ctx.query
   ctx.body = await kan360.checkMd5Html(category,md5_html)
 })
-router.get('/ls')
+router.get('/sdk',async function(ctx,next){
+  await ctx.render('index')
+})
+
 module.exports = router
