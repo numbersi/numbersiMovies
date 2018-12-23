@@ -61,6 +61,7 @@ app.use(play.routes(), play.allowedMethods())
 app.use(collect.routes(), collect.allowedMethods())
 app.use(api.routes(), api.allowedMethods())
 // var isiPad = navigator.userAgent.match(/iPad|iPhone|Linux|Android|iPod/i) != null
+app.keys = ['im a newer secret', 'i like turtle'];
 
 // require('./config/router')(router)
 

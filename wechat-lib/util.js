@@ -104,7 +104,9 @@ const shaIt = (nonce, ticket, timestamp, url) => {
   }
 
   const str = signIt(ret)
+  console.log(str)
   const sha = sha1(str)
+  console.log(sha)
 
   return sha
 }

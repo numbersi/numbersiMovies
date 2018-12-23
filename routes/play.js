@@ -20,6 +20,7 @@ router.get('/', async (ctx, next) => {
     const data = await getDataBy2345Url(url)
   //  返回 模版
   // ctx.body = data
+  
   await ctx.render(data.template,data.data)
 })
 

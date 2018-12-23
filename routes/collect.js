@@ -10,10 +10,9 @@ router.get('/', async function (ctx, next) {
     data = await collectlib.searchBuWd(wd)
     data['title']=wd
     data['movies']=ctx.movie
-    
     await ctx.render('collect',data)
+
   }
-  // await ctx.render('collect',data)
 
 })
 router.get('/video',async function (ctx,next){
@@ -21,11 +20,10 @@ router.get('/video',async function (ctx,next){
   const collectlib = new CollectLib({source:source})
   if(ids){
     data = await collectlib.getPlayLinkById(ids)
-    // ctx.body= data
+    console.log(data);
+    console.log(data.des.join('/'));
     await ctx.render('collect_video',data)
   }
-
-  
 })
 //采集入库
 router.get('/:source/:ids/:title',async function (ctx,next){

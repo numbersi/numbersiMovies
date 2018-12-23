@@ -12,6 +12,5 @@ module.exports = {
     'zuida':'http://www.zdziyuan.com/inc/s_api_zuidam3u8.php',
     'kuyun':'http://caiji.kuyunzyw.com/inc/s_ldg_kkm3u8.asp',
     'tv6':'http://v10.tv6.com/api.php/provide/vod/at/xml/',
-
   },
 }
