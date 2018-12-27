@@ -27,6 +27,11 @@ router.get('/checkMd5Html', async function (ctx, next) {
   const { category, md5_html } = ctx.query
   ctx.body = await kan360.checkMd5Html(category, md5_html)
 })
+router.get('/checkUpdate', async function(ctx,next){
+  const { href, md5_html } = ctx.query
+  ctx.body = await kan360.checkUpdate(href, md5_html)
+
+})
 router.get('/sdk', async function (ctx, next) {
   
   const signStr = await getSignatureAsync(ctx.href)
