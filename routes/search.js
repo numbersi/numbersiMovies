@@ -47,24 +47,11 @@ router.get('/play/:type/:tabs', async (ctx,next)=>{
     await ctx.render ('play',{tabs:Object.keys(seriesNumbers),seriesNumbers:seriesNumbers,playTemplet:playTemplet}) 
 })
 router.get('/getPlayUrl',async (ctx,next)=>{
-    url=ctx.query.url
-    const playUrl=  await getPlayUrl(ctx.query)
-    // type = ctx.query.type
-    // let jiekou ='http://app.baiyug.cn:2019/vip/index.php?url='
-    // if(type){
-    //     jiekou= 'http://api.bbbbbb.me/jx/?url='  
-    // }
-    // const util = require('util');
-    // const execFile = util.promisify(require('child_process').execFile);
-    // const script = resolve(__dirname,'../crawler/playUrl.js')
-    // const { stdout } = await execFile('node', [script,jiekou+url]);
-    // console.log(stdout);
-    ctx.body=playUrl
+    ctx.body =  await getPlayUrl(Object.assign(ctx.query,{page:ctx.browserpage}))
 })
 
 // 加密 encodeUrl
 function encodeTab(tabs){
-    
     return new Buffer(tabs.join('$')).toString('base64');
 }
 // 解密
