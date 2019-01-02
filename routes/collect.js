@@ -23,7 +23,7 @@ router.get('/video',async function (ctx,next){
     console.log(data);
     console.log(data.des.join('/'));
     await ctx.render('collect_video',data)
-  }
+  } 
 })
 //采集入库
 router.get('/:source/:ids/:title',async function (ctx,next){

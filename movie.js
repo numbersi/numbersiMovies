@@ -6,7 +6,6 @@ const type  = process.argv[2]
     const script = resolve(__dirname,'../crawler/movie-list')
     const child = cp.fork(script,[type])
     let invoked =false
-    
     child.on('error',err=>{
         if(invoked) return
         invoked = true
@@ -18,7 +17,7 @@ const type  = process.argv[2]
         let err = code ===0 ?null : new Error('exit code'+code)
         console.log((err))
     })
-
+ 
    var a=  null
    a  =await child.on('message',async (data)=>{
         let result = data.result
