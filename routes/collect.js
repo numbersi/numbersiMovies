@@ -10,6 +10,7 @@ router.get('/', async function (ctx, next) {
     data = await collectlib.searchBuWd(wd)
     data['title']=wd
     data['movies']=ctx.movie
+
     await ctx.render('collect',data)
 
   }
@@ -47,7 +48,6 @@ async function searchFromDB(ctx,next) {
     title: new RegExp(wd + '.*', 'i')
   })
   ctx.movie = data
-
   await next()
 }
 

@@ -1,16 +1,27 @@
 const Koa = require('koa')
 const config = require('./config/config')
 const puppeteer = require('puppeteer')
+const views = require('koa-views')
 
-const { connect ,initSchemas } = require('./app/database/init')
+const {
+    connect,
+    initSchemas
+} = require('./app/database/init')
 
-;(async () => {
+;
+(async () => {
     await connect(config.db)
-    initSchemas() 
+    initSchemas()
     const page = await newPage()
-    const app  = new Koa()
+    const app = new Koa()
+
+    app.use(require('koa-static')(__dirname + '/public'))
+
+    app.use(views(__dirname + '/views', {
+        extension: 'pug'
+    }))
     app.use(async (ctx, next) => {
-        ctx.browserpage  = page 
+        ctx.browserpage = page
         await next()
     });
     require('./config/router')(app)
@@ -18,7 +29,7 @@ const { connect ,initSchemas } = require('./app/database/init')
     console.log('Listening: ' + config.port)
 })()
 
-async function newPage (){
+async function newPage() {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox'],
     })

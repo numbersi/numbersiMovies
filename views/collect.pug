@@ -5,17 +5,19 @@ block content
       h1.page__title #{title}
       -var page = list_video.$
       p.page__desc=page.recordcount+'个结果'
+      p #{list_video.source}
     .page__bd
       .weui-cells__title #{title}
       .weui-cells
       -var videos = list_video.video
         if videos
           each video  in videos
-              a(class="weui-cell weui-cell_access" href=`/collect/video?ids=${video.id}`)
-                .weui-cell__bd
+              a(class="weui-cell weui-cell_access" href=`/collect/video?ids=${video.id}&source=${source}`)
+                .weui-cell__bd 
                   p=video.name+'/'+video.note
                 .weui-cell__ft
                   p=video.type
+
         if movies
           each movie  in movies
             a(class="weui-cell weui-cell_access" href=`/collect/video?ids=${movie.ids}&source=${movie.source}`  )

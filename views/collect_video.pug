@@ -77,7 +77,7 @@ block scriptCode
               $("#my-player").hide()
               $(".weui-loadmore").show()
               const  url =$(this).data('href')
-              if(url.endsWith('.m3u8')){
+              if(url.endsWith('index.m3u8')){
                  getplayer(url)
               }else{
                  getPlayUrl(url)
@@ -103,6 +103,10 @@ block scriptCode
           $("#my-player").show()
           $(".weui-loadmore").hide()
          const playType = getPlayType(data)
+        let haveAd = false
+        if( data.endsWith('index.m3u8')){
+            haveAd = true
+        }
           if(!player){
                player = videojs('my-player',{
                                    poster: "",
@@ -131,6 +135,15 @@ block scriptCode
                                     this.on('error',function(){
                                         console.log("出错")
                                     })
+                                    this.on('timeupdate',function(res){
+                                            const times = [6*60,30*60,]
+                                            let time =6*60 
+                                            let timeLong = time +2*60+25
+                                            if(this.currentTime()>time&&this.currentTime()<timeLong){
+                                                    console.log(this.currentTime())
+                                            }
+                                        
+                                    })
                                });
                                player.play()
                             }else{
@@ -138,6 +151,7 @@ block scriptCode
                                     player.play()
                                     return
                                 }
+                                console.log(player)
                                 player.src({
                                         src: data,
                                         type: playType //"application/x-mpegURL"//'video/mp4'
