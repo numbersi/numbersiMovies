@@ -2,6 +2,7 @@ const Koa = require('koa')
 const config = require('./config/config')
 const puppeteer = require('puppeteer')
 const views = require('koa-views')
+const wechat = require('./wechat-lib/middleware')
 
 const {
     connect,
@@ -24,6 +25,9 @@ const {
         ctx.browserpage = page
         await next()
     });
+
+    const reply  = require('./wechat/reply')
+app.use(wechat(config.wechat,reply.reply))
     require('./config/router')(app)
     app.listen(config.port)
     console.log('Listening: ' + config.port)
