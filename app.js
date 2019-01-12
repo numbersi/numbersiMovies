@@ -24,7 +24,7 @@ const {
     app.use(async (ctx, next) => {
         ctx.browserpage = page
         await next()
-    });
+    })
 
     const reply  = require('./wechat/reply')
 app.use(wechat(config.wechat,reply.reply))

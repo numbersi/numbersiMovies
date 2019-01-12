@@ -6,6 +6,7 @@ const { getSignatureAsync } = require('../app/api/wechat')
 const {sign} =require('../wechat-lib/util')
 const tv6 = new TV6()
 const {getPlayUrl} = require('../lib/lib-getPlayUrl')
+const CollectLib = require('../lib/lib-collect')
 
 const kan360 = new Kan360()
 const config = require('../config/config')
@@ -54,4 +55,42 @@ router.get('/getPlayUrl',async (ctx, next)=>{
   ctx.body =playUrl
 })
 
+router.get('/search',async (ctx, next)=>{
+  const { wd, source } = ctx.query
+  const collectlib = new CollectLib({source:source})
+  if(wd){
+    data = await collectlib.searchBuWd(wd)
+  }
+  ctx.body = data
+})
+router.get('/video',async function (ctx,next){
+  const {ids ,source} = ctx.query
+  const collectlib = new CollectLib({source:source})
+  if(ids){
+    data = await collectlib.getPlayLinkById(ids)
+    console.log(data);
+    
+    data  = {
+      name :data.name[0],
+      pic:fromatPic(data.pic[0]),
+      actor:(data.actor[0]?data.actor[0].split(','):''),
+      director:data.director[0],
+      des:data.des.join('/').replace(/<[^>]+>/g,""),
+      video_list:data.dl[0].dd
+    }
+    ctx.body = data
+  } 
+})
+function fromatVideoList(data){
+  return data.dd
+}
+function fromatPic(data){
+   if(data.startsWith('tu.php?tu=')){
+    return 'https://www.tv6.com/'+data
+   }
+   if(!data.startsWith('http')){
+    return  'http://'+data
+   }
+   return data
+}
 module.exports = router
