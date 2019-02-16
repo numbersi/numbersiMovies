@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "bcrypt": "^3.0.2",
+    "blueimp-md5": "^2.10.0",
     "cheerio": "^1.0.0-rc.2",
     "debug": "^2.6.3",
     "ejs": "^2.6.1",
