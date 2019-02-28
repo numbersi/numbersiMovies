@@ -14,11 +14,9 @@ module.exports = {
     'tv6':'http://v10.tv6.com/api.php/provide/vod/at/xml/',
   },
   jiekou:[
-    
       'http://api.bbbbbb.me/jx/?url=',
-      'http://api.xcq91.top/?url=',
-
       'http://app.baiyug.cn:2019/vip/index.php?url=',
+      'http://api.xcq91.top/?url=',
       'https://2wk.com/vip.php?url=' 
     ]
 }

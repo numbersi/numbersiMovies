@@ -21,8 +21,12 @@ router.get('/video',async function (ctx,next){
   const collectlib = new CollectLib({source:source})
   if(ids){
     data = await collectlib.getPlayLinkById(ids)
-    console.log(data);
-    console.log(data.des.join('/'));
+    data.dl[0].dd = data.dl[0].dd.filter(item=>{
+      return item.$.flag !='27pan'
+      console.log(item.$.flag)
+    })
+    console.log( data.dl[0].dd);
+
     await ctx.render('collect_video',data)
   } 
 })
@@ -33,13 +37,10 @@ router.get('/:source/:ids/:title',async function (ctx,next){
   console.log(ctx.params);
   ctx.params
   const  movie = new movieModel(ctx.params) 
-
-
   const res = await movie.save()
   ctx.body =res
 })
 router.get('/find',searchFromDB)
-
 async function searchFromDB(ctx,next) {
   const movieModel = mongoose.model('Movie')
 

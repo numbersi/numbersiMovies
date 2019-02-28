@@ -1,12 +1,17 @@
 extends layout_jqweui
+
 block content
+    style.
+        .img{
+            width:100%;
+        }
     .page.js_show.list
       .page__hd
         h1.page__title=name
         p.page__desc=type+"/"+note.join('/')+"/"+area.join('/')
         p.page__desc=director.join('/')
         p.page__desc=actor.join('/')
-        img(src=pic, alt="", srcset="")
+        img(class="img" src=pic.join(''), alt="", srcset="")
         .page__desc        #{des.join('/').replace(/<[^>]+>/g,"")}           
       .page__bd
               <div class="weui-tab">
